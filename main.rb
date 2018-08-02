@@ -1,35 +1,42 @@
-# coding: iso-2022-jp
+# coding: utf-8
 require "sinatra"
 require "sequel"
 require "sqlite3"
+require "./lib/ServeHelper"
 
 DB = Sequel.sqlite('kakei.sqlite3')
-
-# todo: $BEPO?$5$l$F$$$kF|IU$N0lMw$r(Bview$B$KEO$9(B
+include ServeHelper
+# todo: 登録されている日付の一覧をviewに渡す
 get '/' do
   erb :index
 end
-# todo: URL$B$H9gCW$9$kF|IU$N%"%$%F%`$r(Bview$BEO$9(B
-get '/:date' do
+# todo: URLと合致する日付のアイテムをview渡す
+get '/date/:date' do
   erb :day
 end
 get '/json' do
-  date,number,name,amount = getUpdateParams(params)
+  date,name,amount = getUpdateParams(params)
 end
 
-get '/json' do
-  date,number,name,amount = getUpdateParams(params)
-  DB[:].insert()
+post '/json' do
+  date,name,amount = getUpdateParams(params)
+  id = get_id_if_nil_set_item(name,amount)
+  DB[:buys].insert(items_id: id,date: date)
+end
+# なんだこの関数名
+def get_id_if_nil_set_item(name,amount)
+  if DB[:items].where(name: name).nil?
+    DB[:items].insert(name: name,amount: amount)
+  end
+  DB[:items].where(name: name).select(:id).first[:id]
 end
 
 put '/json' do
-  date,number,name,amount = getUpdateParams(params)
+  date,name,amount = getUpdateParams(params)
+  id = get_id_if_nil_set_item(name,amount)
+  DB[:buys].where(items_id: id,date: date)
 end
 
 delete '/json' do
-  date,number,name,amount = getUpdateParams(params)
-end
-# refinement$B$G$&$^$/$d$l$=$&$J5$$,$9$k!#(B
-def getUpdateParams(params)
-  [params[:date] || "",params[:number] || "",params[:name] || "",params[:amount] || ""]
+  date,name,amount = getUpdateParams(params)
 end
