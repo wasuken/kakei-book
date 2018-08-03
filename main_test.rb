@@ -17,7 +17,7 @@ class ServeTest < MiniTest::Test
     assert last_response.ok?
   end
   def get_date_json_ok?
-    get '/json?date=&20180801number=1&name=&amount='
+    get '/json?date=20180801&name=test&amount=100'
   end
   def post_date_json_ok?
     get '/json'
