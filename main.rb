@@ -11,7 +11,12 @@ get '/' do
   @title = "kakei-book"
   @css = "main.css"
   @js = ["app.js"]
+
+  @dates = DB[:buys].all
   erb :index
+end
+post '/buys' do
+
 end
 # todo: URLと合致する日付のアイテムをview渡す
 get '/day/:date' do
