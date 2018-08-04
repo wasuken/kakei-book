@@ -1,9 +1,17 @@
-<h2>days</h2>
-<% @items.each do |i|%>
+<h2>days(<%= @date %>,<%= @buy_id %>)</h2>
+
+<form action="/item" method="POST">
+  <input name="name" type="text" value=""/>
+  <input name="amount" type="number" value=""/>
+  <input name="date" type="hidden" value="<%= @date %>"/>
+  <input name="buy_id" type="hidden" value="<%= @buy_id %>"/>
+</form>
+
+<% @recs.each do |rec|%>
    <p>
-	<%= i[:name]%>
+	<%= rec[:name]%>
    </p>
    <p>
-	<%= i[:amount]%>
+	<%= rec[:amount]%>
    </p>
 <% end %>
