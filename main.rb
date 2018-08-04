@@ -11,12 +11,28 @@ get '/' do
   @title = "kakei-book"
   @css = "main.css"
   @js = ["app.js"]
+  @recs = DB[:buys]
 
-  @dates = DB[:buys].all
   erb :index
 end
-post '/buys' do
-
+get '/buy' do
+  p params
+  @buy_id = params[:buy_id]
+  @date   = params[:date]
+  erb :buy
+end
+post '/buy' do
+  date = params[:date].split(' ')[0,2].join(' ')
+  p date
+  cnt = DB[:buys].where(date: date).count
+  DB[:buys].insert(date: date,id: cnt)
+  redirect '/'
+end
+post '/item' do
+  date,name,amount,buy_id = getUpdateParams(params)
+  DB[:items].insert(name: name, amount: amount)
+  item_id = DB[:items].where(name: name).all.first[:id]
+  DB[:buy_item].insert(date: date, item_id:item_id, buy_id: buy_id)
 end
 # todo: URLと合致する日付のアイテムをview渡す
 get '/day/:date' do
@@ -25,24 +41,7 @@ get '/day/:date' do
   erb :day
 end
 get '/json' do
-  date,name,amount = getUpdateParams(params)
-  id = get_id_if_nil_set_item(name,amount)
-  DB[:buys].where(items_id: id,date: date)
-end
-post '/json' do
-  date,name,amount = getUpdateParams(params)
-  id = get_id_if_nil_set_item(name,amount)
-  DB[:buys].insert(items_id: id,date: date)
-end
-put '/json' do
-  date,name,amount = getUpdateParams(params)
-  id = get_id_if_nil_set_item(name,amount)
-  DB[:buys].where(items_id: id,date: date)
-end
-delete '/json' do
-  date,name,amount = getUpdateParams(params)
-  id = get_id_if_nil_set_item(name,amount)
-  DB[:buys].where(items_id: id,date: date).delete()
+
 end
 # なんだこの関数名
 def get_id_if_nil_set_item(name,amount)

@@ -6,7 +6,7 @@ module ServeHelper
       params[:date]   || "",
       params[:name]   || "",
       params[:amount] || "",
-      params[:number] || ""
+      params[:buy_id] || ""
     ]
   end
 end

@@ -1,4 +1,12 @@
 <h2>index</h2>
-<% @dates.each do |d|  %>
-   <p></p>
+<form action="/buy" method="POST">
+  <input name="date" type="date" />
+  <input name="" type="submit" value="submit"/>
+</form>
+<% @recs.each do |rec|%>
+<p>
+  <a href="/buy?buy_id=<%= rec[:id] %>&date=<%= rec[:date] %>">
+	<%= rec[:id]%>::<%= rec[:date].strftime("%Y/%m/%d %H:%M:%S")%>
+  </a>
+</p>
 <% end %>
