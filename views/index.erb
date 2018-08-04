@@ -5,7 +5,7 @@
 </form>
 <% @recs.each do |rec|%>
 <p>
-  <a href="/item?buy_id=<%= rec[:id] %>&date=<%= rec[:date] %>">
+  <a href="/items?buy_id=<%= rec[:id] %>&date=<%= rec[:date] %>">
 	<%= rec[:id]%>::<%= rec[:date].strftime("%Y/%m/%d %H:%M:%S")%>
   </a>
 </p>

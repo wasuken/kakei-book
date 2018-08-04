@@ -1,4 +1,4 @@
 .bundle
 *.lock
 vendor
-*.sqlite*
+*.sqlite3

@@ -37,7 +37,7 @@ get '/items' do
   @date = params[:date]
   @buy_id = params[:buy_id]
   redirect '/' if !(@date && @buy_id)
-  items = DB[:buy_item].where(Sequel.or(:date => date,:buy_id => buy_id)).select(:item_id).all
+  items = DB[:buy_item].where(:date => @date,:buy_id => @buy_id).select(:item_id).all
   @recs = DB[:items].where(:id => items.map{|i| i[:item_id]}).all
   erb :day
 end
