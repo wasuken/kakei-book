@@ -29,6 +29,8 @@ post '/buy' do
 end
 post '/item' do
   date,name,amount,buy_id = getUpdateParams(params)
+  return if DB[:items].where(name: name).all.count > 0
+
   DB[:items].insert(name: name, amount: amount)
   item_id = DB[:items].where(name: name).all.first[:id]
   DB[:buy_item].insert(date: date, item_id: item_id, buy_id: buy_id)
