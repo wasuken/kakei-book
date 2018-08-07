@@ -9,7 +9,7 @@ include ServeHelper
 # todo: 登録されている日付の一覧をviewに渡す
 get '/' do
   @title = "kakei-book"
-  @css = "main.css"
+  @css = "index.css"
   @js = ["app.js"]
   @recs = DB[:buys]
 
@@ -23,8 +23,7 @@ get '/buy' do
 end
 post '/buy' do
   date = params[:date].split(' ')[0,2].join(' ')
-  cnt = DB[:buys].where(date: date).count
-  DB[:buys].insert(date: date,id: cnt)
+  DB[:buys].insert(date: date)
   redirect '/'
 end
 post '/item' do
@@ -33,13 +32,12 @@ post '/item' do
 
   DB[:items].insert(name: name, amount: amount)
   item_id = DB[:items].where(name: name).all.first[:id]
-  DB[:buy_item].insert(date: date, item_id: item_id, buy_id: buy_id)
+  DB[:buy_item].insert(item_id: item_id, buy_id: buy_id)
 end
 get '/items' do
-  @date = params[:date]
   @buy_id = params[:buy_id]
-  redirect '/' if !(@date && @buy_id)
-  items = DB[:buy_item].where(:date => @date,:buy_id => @buy_id).select(:item_id).all
+  redirect '/' if !@buy_id
+  items = DB[:buy_item].where(:buy_id => @buy_id).select(:item_id).all
   @recs = DB[:items].where(:id => items.map{|i| i[:item_id]}).all
   erb :day
 end

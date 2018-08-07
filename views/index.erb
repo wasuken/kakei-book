@@ -1,11 +1,13 @@
-<h2>index</h2>
+<div class="ribbon3">
+	 <h2>index</h2>
+</div>
 <form action="/buy" method="POST">
   <input name="date" type="date" />
   <input name="" type="submit" value="submit"/>
 </form>
 <% @recs.each do |rec|%>
 <p>
-  <a href="/items?buy_id=<%= rec[:id] %>&date=<%= rec[:date] %>">
+  <a href="/items?buy_id=<%= rec[:id] %>">
 	<%= rec[:id]%>::<%= rec[:date].strftime("%Y/%m/%d %H:%M:%S")%>
   </a>
 </p>
