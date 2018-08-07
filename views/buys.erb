@@ -1,4 +1,4 @@
-<h2>days(<%= @date %>,<%= @buy_id %>)</h2>
+<h2>buys</h2>
 
 <form action="/item" method="POST">
   <p>name:<input name="name" type="text" value=""/>
@@ -15,3 +15,13 @@
   <input name="buy_id" type="hidden" value="<%= @buy_id %>"/>
   <input name="" type="submit" value="submit"/>
 </form>
+
+<p>明細</p>
+
+<p>名前:::金額</p>
+
+<% @recs.each do |rec|%>
+<p><%= rec[:name]%> ::: <%= rec[:amount]%></p>
+<% end %>
+
+<p>合計:<%= @recs.map{|rec| rec[:amount]}.sum %></p>

@@ -33,13 +33,14 @@ post '/item' do
   DB[:items].insert(name: name, amount: amount)
   item_id = DB[:items].where(name: name).all.first[:id]
   DB[:buy_item].insert(item_id: item_id, buy_id: buy_id)
+  redirect '/items?buy_id=#{buy_id}'
 end
 get '/items' do
   @buy_id = params[:buy_id]
   redirect '/' if !@buy_id
   items = DB[:buy_item].where(:buy_id => @buy_id).select(:item_id).all
   @recs = DB[:items].where(:id => items.map{|i| i[:item_id]}).all
-  erb :day
+  erb :buys
 end
 # todo: URLと合致する日付のアイテムをview渡す
 get '/day/:date' do
