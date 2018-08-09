@@ -9,7 +9,7 @@ include ServeHelper
 # todo: 登録されている日付の一覧をviewに渡す
 get '/' do
   @title = "kakei-book"
-  @css = "index.css"
+  @css = ["index.css","layout.css"]
   @js = ["app.js"]
   @recs = DB[:buys]
 
@@ -19,6 +19,8 @@ get '/buy' do
   p params
   @buy_id = params[:buy_id]
   @date   = params[:date]
+  @title = "kakei-book"
+  @css = ["buy.css","layout.css"]
   erb :buy
 end
 post '/buy' do
@@ -40,6 +42,8 @@ get '/items' do
   redirect '/' if !@buy_id
   items = DB[:buy_item].where(:buy_id => @buy_id).select(:item_id).all
   @recs = DB[:items].where(:id => items.map{|i| i[:item_id]}).all
+  @title = "kakei-book"
+  @css = ["buys.css","layout.css"]
   erb :buys
 end
 # todo: URLと合致する日付のアイテムをview渡す

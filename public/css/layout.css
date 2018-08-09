@@ -1,0 +1,11 @@
+body{
+	background: #a8ff78;
+	background: -webkit-linear-gradient(to right, #a8ff78, #78ffd6);
+	background: linear-gradient(to right, #a8ff78, #78ffd6);
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}

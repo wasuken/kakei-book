@@ -2,7 +2,9 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-	<link rel="stylesheet" href="/css/<%= @css %>">
+	<% (@css || []).each do |c|%>
+	<link rel="stylesheet" href="/css/<%= c %>">
+	<% end%>
     <title>
 	  <%= @title %>
 	</title>
@@ -13,4 +15,7 @@
   <body>
     <%= yield %>
   </body>
+  <footer>
+	<a href="/">index</a>
+  </footer>
 </html>
