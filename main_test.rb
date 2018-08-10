@@ -16,13 +16,8 @@ class ServeTest < MiniTest::Test
     get '/'
     assert last_response.ok?
   end
-  def post_date_json_ok?
-    get '/json'
-  end
-  def put_date_json_ok?
-    get '/json'
-  end
-  def delete_date_json_ok?
-    get '/json'
+  def current_response_ok?
+    get '/items'
+    assert last_response.ok?
   end
 end
