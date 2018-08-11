@@ -6,6 +6,8 @@ require "./lib/ServeHelper"
 
 DB = Sequel.sqlite('kakei.sqlite3')
 include ServeHelper
+
+enable :method_override
 # todo: 登録されている日付の一覧をviewに渡す
 get '/' do
   @title = "kakei-book"
@@ -37,6 +39,10 @@ post '/item' do
   DB[:buy_item].insert(item_id: item_id, buy_id: buy_id)
   redirect '/items?buy_id=#{buy_id}'
 end
+# 複数のitemを登録する。
+post '/items' do
+ p "post!"
+end
 get '/items' do
   @buy_id = params[:buy_id]
   redirect '/' if !@buy_id
@@ -45,6 +51,14 @@ get '/items' do
   @title = "kakei-book"
   @css = ["buys.css","layout.css"]
   erb :buys
+end
+delete '/items' do
+  @buy_id = params[:buy_id]
+  redirect '/' if !@buy_id
+
+  p DB[:buy_item].where(:item_id => params[:id],:buy_id => @buy_id).delete
+  p DB[:items].where(:id => params[:id]).delete
+  redirect '/items?buy_id=#{@buy_id}'
 end
 # todo: URLと合致する日付のアイテムをview渡す
 get '/day/:date' do

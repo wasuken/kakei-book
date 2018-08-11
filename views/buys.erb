@@ -18,10 +18,18 @@
 
 <p>明細</p>
 
-<p>名前:::金額</p>
+<p>名前 ::: 金額</p>
 
-<% @recs.each do |rec|%>
-<p><%= rec[:name]%> ::: <%= rec[:amount]%></p>
-<% end %>
+<form action="/items" method="post">
+  <input name="buy_id" type="hidden" value="<%= @buy_id %>"/>
+  <input name="_method" type="hidden" value="delete">
+  <% @recs.each do |rec|%>
+  <p>
+	<input type="checkbox" name="id[]" value="<%= rec[:id]%>" />
+	<%= rec[:name]%> ::: <%= rec[:amount]%>
+  </p>
+  <% end %>
+  <input type="submit" value="delete">
+</form>
 
 <p>合計:<%= @recs.map{|rec| rec[:amount]}.sum %></p>
