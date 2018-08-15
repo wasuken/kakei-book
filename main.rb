@@ -18,7 +18,6 @@ get '/' do
   erb :index
 end
 get '/buy' do
-  p params
   @buy_id = params[:buy_id]
   @date   = params[:date]
   @title = "kakei-book"
@@ -37,8 +36,18 @@ post '/item' do
   DB[:items].insert(name: name, amount: amount)
   item_id = DB[:items].where(name: name).all.first[:id]
   DB[:buy_item].insert(item_id: item_id, buy_id: buy_id)
+
   redirect '/items?buy_id=#{buy_id}'
 end
+put '/item' do
+  target = DB[:buy_item].where(item_id: params[:item_id],buy_id: params[:buy_id])
+  return if target.all.count <= 0
+  DB[:items].where(item_id: params[:item_id])
+    .update(name: params[:name], amount: params[:amount])
+
+  redirect '/items?buy_id=#{params[:buy_id]}'
+end
+
 # 複数のitemを登録する。
 post '/items' do
  p "post!"
@@ -56,8 +65,8 @@ delete '/items' do
   @buy_id = params[:buy_id]
   redirect '/' if !@buy_id
 
-  p DB[:buy_item].where(:item_id => params[:id],:buy_id => @buy_id).delete
-  p DB[:items].where(:id => params[:id]).delete
+  DB[:buy_item].where(:item_id => params[:id],:buy_id => @buy_id).delete
+  DB[:items].where(:id => params[:id]).delete
   redirect '/items?buy_id=#{@buy_id}'
 end
 # todo: URLと合致する日付のアイテムをview渡す

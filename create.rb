@@ -17,7 +17,7 @@ DB.run("create table buys(
 DB.run("create table buy_item(
     item_id integer,
     buy_id integer,
-    foreign key(item_id) references items(id),
+    foreign key(item_id)   references items(id),
     foreign key(buy_id)    references buys(id),
     primary key(item_id,buy_id)
 )")
